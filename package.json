@@ -1,0 +1,19 @@
+{
+  "name": "hj-diplom",
+  "version": "1.0.0",
+  "description": "Дипломный проект курса «JavaScript в браузере»\r ===",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alucard163/hj-diplom.git"
+  },
+  "author": "Roman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alucard163/hj-diplom/issues"
+  },
+  "homepage": "https://github.com/Alucard163/hj-diplom#readme"
+}
