@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 
 const ws = 'https://neto-api.herokuapp.com';
 
@@ -13,6 +13,7 @@ let currColor;
 const currImg = document.querySelector('.current-image');
 const loadImg = document.querySelector('.image-loader');
 const wrapApp = document.querySelector('.app');
+const formComment = document.querySelector('.comments__form').cloneNode(true);
 
 let movedPiece = null;
 let minY, minX, maxX, maxY;
@@ -484,11 +485,18 @@ function addWrapforCanvsComm() {
 	});
 }
 
+/*function removeCommetns() {
+    Array.from(formComment.querySelectorAll('.comment')).forEach( elem => {
+        elem.parentNode.removeChild(elem);
+	});
+}*/
+
 //Форма для комментариев
 function addCommentForm(x, y) {
-	const formComment = document.createElement('form');
-	formComment.classList.add('comments__form');
-	formComment.innerHTML = `
+	
+	/*const formComment = document.createElement('form');
+	formComment.classList.add('comments__form');*/
+	/*formComment.innerHTML = `
 		<span class="comments__marker"></span><input type="checkbox" class="comments__marker-checkbox">
 		<div class="comments__body">
 			<div class="comment">
@@ -504,7 +512,7 @@ function addCommentForm(x, y) {
 			<input class="comments__close" type="button" value="Закрыть">
 			<input class="comments__submit" type="submit" value="Отправить">
 		</div>`;
-
+*/   
 	//смещение, чтобы маркер встал туда, куда кликнули
 	const left = x - 22;
 	const top = y - 14;
@@ -561,21 +569,22 @@ function addCommentForm(x, y) {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 			})
-			.then( res => {
+			/*.then( res => {
 				if (res.status >= 200 && res.status < 300) {
 					return res;
 				}
 				throw new Error (res.statusText);
-			})
+			})*/
 			.then(res => res.json())
 			.catch(er => {
 				console.log(er);
 				formComment.querySelector('.loader').parentElement.style.display = 'none';
 			});
 	}
-
+	
 	return formComment;
 }
+
 
 //Добавление комментария в форму
 function addMessageComment(message, form) {
@@ -626,7 +635,6 @@ function updCommsForm(newComment) {
 			newForm.style.top = newComment[id].top + 'px';
 			wrapForCanv.appendChild(newForm);
 			addMessageComment(newComment[id], newForm);
-
 			if (!wrapApp.querySelector('#comments-on').checked) {
 				newForm.style.display = 'none';
 			}
