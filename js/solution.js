@@ -365,7 +365,7 @@ function getFileInfo(id) {
 	xhrGetInfo.send();
 
 	getData = JSON.parse(xhrGetInfo.responseText);
-	localStorage.host = `${window.location.origin}${window.location.pathname}?id=${getData.id}`;
+	localStorage.host = `${window.location.origin}${window.location.pathname}?id=${getData.id}}`;
 	wss();	
 	addBackground(getData);
 	getGlobalVar('burger').style.cssText = ``;
