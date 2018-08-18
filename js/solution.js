@@ -324,8 +324,9 @@ function transmitFile(files) {
 		formData.append('image', file);
 	});
 
-	showElement(loadImg);
 
+	showElement(loadImg);
+	
 	fetch(`${ws}/pic`, {
 			body: formData,
 			credentials: 'same-origin',
@@ -333,7 +334,7 @@ function transmitFile(files) {
 		})
 		.then( res => {
 			if (res.status >= 200 && res.status < 300) {
-				return res;
+				return res;				
 			}
 			throw new Error (res.statusText);
 		})
@@ -345,6 +346,7 @@ function transmitFile(files) {
 			console.log(er);
 			hideElement(loadImg);
 		});
+		
 }
 
 // удаление форм комментариев, при загрузке нового изображения
@@ -365,7 +367,8 @@ function getFileInfo(id) {
 	xhrGetInfo.send();
 
 	getData = JSON.parse(xhrGetInfo.responseText);
-	localStorage.host = `${window.location.origin}${window.location.pathname}?id=${getData.id}}`;
+	localStorage.host = `${window.location.protocol}${window.location.host}${window.location.pathname}?id=${getData.id}`;
+	//location.href=localStorage.host; //возможно сработает
 	wss();	
 	addBackground(getData);
 	getGlobalVar('burger').style.cssText = ``;
@@ -376,9 +379,12 @@ function getFileInfo(id) {
 		addWrapforCanvsComm();
 		createCanvas();
 		currImg.dataset.load = 'load';
+		
 	});
 
+	
 	updCommsForm(getData.comments);
+	
 }
 
 // ----------режим "Рецензирование"-----------------------------------------------
@@ -495,8 +501,8 @@ function addWrapforCanvsComm() {
 function addCommentForm(x, y) {
 	
 	/*const formComment = document.createElement('form');
-	formComment.classList.add('comments__form');*/
-	/*formComment.innerHTML = `
+	formComment.classList.add('comments__form');
+	formComment.innerHTML = `
 		<span class="comments__marker"></span><input type="checkbox" class="comments__marker-checkbox">
 		<div class="comments__body">
 			<div class="comment">
@@ -511,8 +517,8 @@ function addCommentForm(x, y) {
 			<textarea class="comments__input" type="text" placeholder="Напишите ответ..."></textarea>
 			<input class="comments__close" type="button" value="Закрыть">
 			<input class="comments__submit" type="submit" value="Отправить">
-		</div>`;
-*/   
+		</div>`;*/
+   
 	//смещение, чтобы маркер встал туда, куда кликнули
 	const left = x - 22;
 	const top = y - 14;
@@ -679,6 +685,7 @@ function wss() {
 function checkurlId(id) {
 	if (!id) { return;	}
 	getFileInfo(id);
+	
 	revealComments();
 }
 
