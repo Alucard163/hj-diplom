@@ -280,10 +280,10 @@ function uploadDataFile(event) {
 
 		if (currImg.dataset.load === 'load') {
 			removeForm();
-			curves = []; // очистка массива с линиями
+			curves = []; // очистка массива с линиями			
 		}
 
-		transmitFile(files);
+		transmitFile(files);		
 	});
 
 	input.click();
@@ -307,7 +307,7 @@ function eventFileDrop(event) {
 	//проверяем перетаскиваемый файл, если файл нужного типа, то загружаем, иначе показываем ошибку.
 	files.forEach(file => {
 		if ((file.type === 'image/jpeg') || (file.type === 'image/png')) {
-			transmitFile(files);
+			transmitFile(files);			
 		} else {
 			showElement(getGlobalVar('error'))
 		}
@@ -334,7 +334,7 @@ function transmitFile(files) {
 		})
 		.then( res => {
 			if (res.status >= 200 && res.status < 300) {
-				return res;				
+				return res;								
 			}
 			throw new Error (res.statusText);
 		})
@@ -367,24 +367,24 @@ function getFileInfo(id) {
 	xhrGetInfo.send();
 
 	getData = JSON.parse(xhrGetInfo.responseText);
-	localStorage.host = `${window.location.protocol}${window.location.host}${window.location.pathname}?id=${getData.id}`;
-	//location.href=localStorage.host; //возможно сработает
+	var link = new URL(`${window.location.protocol}${window.location.host}${window.location.pathname}?id=${location.hash=getData.id}`);
+	localStorage.host = link;
+	
+	/*console.log (link);*/
+	
 	wss();	
 	addBackground(getData);
 	getGlobalVar('burger').style.cssText = ``;
 	showMenu();
+	
 
 	currImg.addEventListener('load', () => {
 		hideElement(loadImg);
 		addWrapforCanvsComm();
 		createCanvas();
-		currImg.dataset.load = 'load';
-		
+		currImg.dataset.load = 'load';		
 	});
-
-	
-	updCommsForm(getData.comments);
-	
+	updCommsForm(getData.comments);	
 }
 
 // ----------режим "Рецензирование"-----------------------------------------------
@@ -423,6 +423,7 @@ function revealComments() {
 // добавляем фон 
 function addBackground(fileInfo) {
 	currImg.src = fileInfo.url;
+	
 }
 
 //чекбок "скрыть комментарии"
@@ -662,10 +663,11 @@ function insertWssCommentForm(wssComment) {
 // веб сокет
 function wss() {
 	connection = new WebSocket(`wss://neto-api.herokuapp.com/pic/${getData.id}`);
+	
 	connection.addEventListener('message', event => {
 		if (JSON.parse(event.data).event === 'pic'){
 			if (JSON.parse(event.data).pic.mask) {
-				canvas.style.background = `url(${JSON.parse(event.data).pic.mask})`;
+				canvas.style.background = `url(${JSON.parse(event.data).pic.mask})`;				
 			} else {
 				canvas.style.background = ``;
 			}
@@ -684,6 +686,7 @@ function wss() {
 // проверяем ссылку на параметр id
 function checkurlId(id) {
 	if (!id) { return;	}
+	
 	getFileInfo(id);
 	
 	revealComments();
