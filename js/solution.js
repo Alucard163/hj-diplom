@@ -32,7 +32,7 @@ setGlobalVar('menu');
 setGlobalVar('burger');
 
 // ----------режим "Публикация"------------------------------------------------
-currImg.src = ''; // убираем фон
+ currImg.src = ''; // убираем фон
 
 // скрываем пункты меню для режима "Публикации"
 getGlobalVar('menu').dataset.state = 'initial'; 
@@ -300,7 +300,10 @@ function eventFileDrop(event) {
 	if (currImg.dataset.load === 'load') {
 		showElement(getGlobalVar('error'));
 		getGlobalVar('error').lastElementChild.textContent = 'Чтобы загрузить новое изображение, пожалуйста, воспользуйтесь пунктом "Загрузить новое" в меню';
-		hideErr();
+		/*hideErr();*/
+		getGlobalVar('menu').dataset.state = 'selected';
+		getGlobalVar('menu').querySelector('.share').dataset.state = 'selected';
+		getGlobalVar('menu').querySelector('.menu__url').value = localStorage.host;
 		return;
 	}
 
@@ -367,7 +370,7 @@ function getFileInfo(id) {
 	xhrGetInfo.send();
 
 	getData = JSON.parse(xhrGetInfo.responseText);
-	var link = new URL(`${window.location.protocol}${window.location.host}${window.location.pathname}?id=${location.hash=getData.id}`);
+	let link = new URL(`${window.location.protocol}${window.location.host}${window.location.pathname}?id=${location.hash=getData.id}`);
 	localStorage.host = link;
 	
 	/*console.log (link);*/
