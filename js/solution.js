@@ -229,7 +229,7 @@ function drag(event) {
 }
 
 // Отпускаем (drop) меню
-function drop(evet) {
+function drop(event) {
 	if (movedPiece) {
 		movedPiece = null;
 	}
@@ -300,10 +300,10 @@ function eventFileDrop(event) {
 	if (currImg.dataset.load === 'load') {
 		showElement(getGlobalVar('error'));
 		getGlobalVar('error').lastElementChild.textContent = 'Чтобы загрузить новое изображение, пожалуйста, воспользуйтесь пунктом "Загрузить новое" в меню';
-		/*hideErr();*/
-		getGlobalVar('menu').dataset.state = 'selected';
+		hideErr();
+		/*getGlobalVar('menu').dataset.state = 'selected';
 		getGlobalVar('menu').querySelector('.share').dataset.state = 'selected';
-		getGlobalVar('menu').querySelector('.menu__url').value = localStorage.host;
+		getGlobalVar('menu').querySelector('.menu__url').value = localStorage.host;*/
 		return;
 	}
 
@@ -370,16 +370,14 @@ function getFileInfo(id) {
 	xhrGetInfo.send();
 
 	getData = JSON.parse(xhrGetInfo.responseText);
-	let link = new URL(`${window.location.protocol}${window.location.host}${window.location.pathname}?id=${location.hash=getData.id}`);
-	localStorage.host = link;
-	
-	/*console.log (link);*/
+	localStorage.host = `${window.location.origin}${window.location.pathname}?id=${getData.id}`;
 	
 	wss();	
 	addBackground(getData);
 	getGlobalVar('burger').style.cssText = ``;
 	showMenu();
-	
+	let link = localStorage.host;
+	history.pushState(null, null, link);
 
 	currImg.addEventListener('load', () => {
 		hideElement(loadImg);
@@ -579,12 +577,12 @@ function addCommentForm(x, y) {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 			})
-			/*.then( res => {
+			.then( res => {
 				if (res.status >= 200 && res.status < 300) {
 					return res;
 				}
 				throw new Error (res.statusText);
-			})*/
+			})
 			.then(res => res.json())
 			.catch(er => {
 				console.log(er);
